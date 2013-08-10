@@ -1,0 +1,88 @@
+<style>
+li{padding: 10px 10px;}
+</style>
+
+<div id="details">
+<table border="1" width="50%">
+<?php foreach($this->bookdetails as $bval){	?>
+<tr>
+<td width="30%"><?php echo $bval['title'] ?></td>
+<td width="30%"><?php echo $bval['description'] ?></td>
+<td width="30%"><?php echo $bval['price'] ?></td>
+</tr>
+<?php } ?>
+<tr>
+<td colspan="3">
+	<a href="#" id="add">Add</a>
+</td>
+</tr>
+</table>
+
+
+
+
+<div id="addForm" style="display:none">
+	
+	<FORM METHOD=POST id="foo" ENCTYPE="text/plain">
+<table border=0 cellspacing=0 cellpadding=2>
+<tr>
+<td colspan=2>
+<font size=2 face="arial" color="#000000">
+<INPUT type="text" name="name" size=17> :Name<BR>
+<INPUT type="text" name="desc" size=17> :Description<BR>
+<INPUT type="text" name="price" size=17> :Price
+</font>
+</td>
+</tr>
+
+<tr>
+<td colspan=2>
+<center>
+<INPUT type=submit id="save" value="Save">
+<INPUT type=reset value="Clear">
+</center>
+</td></tr></table>
+</FORM>
+<!-- ** END OF FORM ** -->
+		
+</div>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+$("#add").click(function(){
+	$("#addForm").toggle();
+});
+
+/* attach a submit handler to the form */
+$("#foo").submit(function(event) {
+
+  /* stop form from submitting normally */
+  event.preventDefault();
+
+  /*clear result div*/
+   $("#result").html('');
+
+  /* get some values from elements on the page: */
+   var values = $(this).serialize();
+
+  /* Send the data using post and put the results in a div */
+    $.ajax({
+      url: "../public/index.php/index/add",
+      type: "post",
+      data: values,
+      success: function(){
+          alert("success");
+           $("#details").load("../public/index.php/index/index");
+      },
+      error:function(){
+          alert("failure");
+          $("#result").html('there is error while submit');
+      }   
+    }); 
+});
+
+});
+</script>
+
