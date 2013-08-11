@@ -3,16 +3,19 @@ li{padding: 10px 10px;}
 </style>
 
 <div id="details">
-<table border="1" width="50%">
+
+
+<table border="1" width="70%">
 <?php foreach($this->bookdetails as $bval){	?>
 <tr>
 <td width="30%"><?php echo $bval['title'] ?></td>
 <td width="30%"><?php echo $bval['description'] ?></td>
 <td width="30%"><?php echo $bval['price'] ?></td>
+<td width="20%">Edit &nbsp; Delete</td>
 </tr>
 <?php } ?>
 <tr>
-<td colspan="3">
+<td colspan="4">
 	<a href="#" id="add">Add</a>
 </td>
 </tr>
@@ -69,12 +72,12 @@ $("#foo").submit(function(event) {
 
   /* Send the data using post and put the results in a div */
     $.ajax({
-      url: "../public/index.php/index/add",
+      url: "../index.php/index/add",
       type: "post",
       data: values,
       success: function(){
           alert("success");
-           $("#details").load("../public/index.php/index/index");
+           $("#details").load("../index.php/index/index");
       },
       error:function(){
           alert("failure");
