@@ -1,6 +1,6 @@
 <?php
 
-class Saffron_Model_FooTest extends PHPUnit_Framework_TestCase
+class Application_Model_BookTest extends PHPUnit_Framework_TestCase
 {
 
 	protected $object;
@@ -10,7 +10,7 @@ class Saffron_Model_FooTest extends PHPUnit_Framework_TestCase
 		$this->object = new Saffron_Model_Foo;
 	}
 
-	function testFooBar()
+	function testGetBookDetails()
 	{
 		$this->assertTrue(true);
 	}

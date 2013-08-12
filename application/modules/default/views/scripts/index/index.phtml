@@ -11,7 +11,7 @@ li{padding: 10px 10px;}
 <td width="30%"><?php echo $bval['title'] ?></td>
 <td width="30%"><?php echo $bval['description'] ?></td>
 <td width="30%"><?php echo $bval['price'] ?></td>
-<td width="20%">Edit &nbsp; Delete</td>
+<td width="20%"><a href="<?php echo $bval['id'] ?>" id="link">Edit</a> &nbsp; Delete</td>
 </tr>
 <?php } ?>
 <tr>
@@ -25,19 +25,18 @@ li{padding: 10px 10px;}
 
 
 <div id="addForm" style="display:none">
-	
-	<FORM METHOD=POST id="foo" ENCTYPE="text/plain">
+<FORM METHOD=POST id="foo" ENCTYPE="text/plain">
 <table border=0 cellspacing=0 cellpadding=2>
 <tr>
 <td colspan=2>
 <font size=2 face="arial" color="#000000">
-<INPUT type="text" name="name" size=17> :Name<BR>
-<INPUT type="text" name="desc" size=17> :Description<BR>
-<INPUT type="text" name="price" size=17> :Price
+<INPUT type="text" name="name" id="name" size=17> :Name<BR>
+<INPUT type="text" name="desc" id="desc" size=17> :Description<BR>
+<INPUT type="text" name="price" id="price" size=17> :Price
+<input type="hidden" name="id" id="id">
 </font>
 </td>
 </tr>
-
 <tr>
 <td colspan=2>
 <center>
@@ -47,15 +46,26 @@ li{padding: 10px 10px;}
 </td></tr></table>
 </FORM>
 <!-- ** END OF FORM ** -->
-		
 </div>
+
+
+
+
+
+
+
+
+
 </div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
 
 $("#add").click(function(){
-	$("#addForm").toggle();
+	$("#addForm").toggle(function(){
+		$(':input',this).val('');
+	});
+	
 });
 
 /* attach a submit handler to the form */
@@ -72,19 +82,50 @@ $("#foo").submit(function(event) {
 
   /* Send the data using post and put the results in a div */
     $.ajax({
-      url: "../index.php/index/add",
+      url: "../zfskeleton/index.php/index/add",
       type: "post",
       data: values,
       success: function(){
           alert("success");
-           $("#details").load("../index.php/index/index");
+          $("#details").load("../zfskeleton/index.php/index/index");
       },
       error:function(){
           alert("failure");
-          $("#result").html('there is error while submit');
+          //$("#result").html('there is error while submit');
       }   
     }); 
 });
+
+//Edit link
+$("a[id^='link']").on('click', function (e){
+  e.preventDefault();
+  var link = $(this).attr('href');
+ 
+  $.ajax({
+      url: "../zfskeleton/index.php/index/edit/id/"+link,
+      type: "get",
+      //data: values,
+      success: function(data){
+         // alert("success");
+		  var resData = eval('('+data+')');
+		  $("#addForm").show(function(){
+			$("#name").val(resData.title);
+			$("#desc").val(resData.description);
+			$("#price").val(resData.price);
+			$("#id").val(resData.id);
+		  });
+      },
+      error:function(){
+          alert("failure");
+          //$("#result").html('there is error while submit');
+      }   
+    }); 
+  
+  
+  
+});
+
+
 
 });
 </script>

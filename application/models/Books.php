@@ -11,11 +11,26 @@ class Application_Model_Books extends Zend_Db_Table_Abstract
 		return $ret;
 	}
 	
-	public function insertBook($values)
+	public function insertBook($values,$id)
 	{
 		$db = $this->_db;
-		$db->insert('books',$values);
+		if(!empty($id)){
+			$where = array();
+			$where[] = $db->quoteInto('id = ?', $id);
+			
+			$db->update('books',$values,$where);
+		}else{
+			$db->insert('books',$values);
+		}
 		return true;
+	}
+	
+	public function getDetailsById($id)
+	{
+		$db = $this->_db;
+		$select = $db->select()->from('books','*')->where("id = ?", $id);
+		$ret = $db->fetchRow($select);
+		return $ret;
 	}
 	
 }

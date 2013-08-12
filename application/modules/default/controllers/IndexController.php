@@ -2,7 +2,6 @@
 
 class IndexController extends Zend_Controller_Action
 {
-
 	public function indexAction()
 	{
 		$this->view->headTitle('Hello World');
@@ -15,21 +14,29 @@ class IndexController extends Zend_Controller_Action
 	
 	public function addAction()
 	{
-		//$myData = http_build_query($this->getRequest()->getParams());
 		$this->_helper->viewRenderer->setNoRender();
-		$name = $this->getRequest()->getParam('name');
-	//	$pname = $this->getRequest()->getPost('name');
-		//echo $pname;
-		echo $name;
-		
+		$id = $this->getRequest()->getParam('id');
 		$values = array('title'=>$this->getRequest()->getParam('name')
 						,'description'=>$this->getRequest()->getParam('desc')
 						,'price'=>$this->getRequest()->getParam('price')
 						);
+						//print_r($_POST);
+						//exit;
 		$bookObj = new Application_Model_Books();
+		$bookDetails = $bookObj->insertBook($values,$id);
+
+		exit;
+	}
+	
+	public function editAction()
+	{
+		$this->_helper->viewRenderer->setNoRender();
+		$id = $this->getRequest()->getParam('id');
 		
-		$bookDetails = $bookObj->insertBook($values);
+		$bookObj = new Application_Model_Books();
+		$bookDetails = $bookObj->getDetailsById($id);
 		
+		echo json_encode($bookDetails);
 		exit;
 	}
 
